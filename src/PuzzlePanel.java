@@ -1,27 +1,23 @@
-import java.awt.BorderLayout; 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+import javax.swing.JLayeredPane;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.MenuListener;
 
 
-public class PuzzlePanel extends JPanel implements MouseMotionListener{
+public class PuzzlePanel extends JLayeredPane implements MouseMotionListener{
 	
 	BufferedImage buffImg = null;
-	int width,height,start_x,start_y,bounds_x,bounds_y;
+	int width,height,start_x,start_y;
+	public boolean lock = false;
 		  
 	public PuzzlePanel(Dimension size,Dimension start){
 		setPreferredSize(size);
@@ -32,7 +28,7 @@ public class PuzzlePanel extends JPanel implements MouseMotionListener{
 		height = (int)(size.getHeight());
 		start_x= (int)(start.getWidth());
 		start_y = (int)(start.getHeight());
-		setBounds(start_x,start_y,width,height);
+		setLayer(this,1);
 		addMouseMotionListener(this);
 	
 		try{
@@ -49,8 +45,19 @@ public class PuzzlePanel extends JPanel implements MouseMotionListener{
 
 	@Override
 	public void mouseDragged(MouseEvent event) {
-		setBounds(event.getXOnScreen()-200,event.getYOnScreen()-200,width,height);
-		repaint();		
+		
+		setBounds(event.getXOnScreen()-200,event.getYOnScreen()-200,width,height);		
+		
+		if((start_x)<(event.getXOnScreen()-200) &&(event.getXOnScreen()-200)<(start_x+width)
+				&& (start_y)<( event.getYOnScreen()-200) &&( event.getYOnScreen()-200) < (start_y+height)){
+			
+			removeMouseMotionListener(this);
+			setBounds(start_x+200,start_y+100,width,height);
+			lock = true;
+			
+			BacePanel bpanel =(BacePanel)PuzzlePanel.this.getParent();
+			bpanel.piececheck();
+		}
 	}
 
 	@Override
