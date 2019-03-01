@@ -9,7 +9,7 @@ import javax.swing.JLayeredPane;
 
 public class BacePanel extends JLayeredPane {
 	
-	PuzzlePanel piece[] = new PuzzlePanel[9];
+	PuzzlePanel piece[][];
 	enum funcvarie {START,RESET}
 	Address adr;
 	int piecenumber;
@@ -25,17 +25,16 @@ public class BacePanel extends JLayeredPane {
 		setBackground(new Color(50,128,128));
 		
 		JLabel welcome = new JLabel();
-		welcome.setText("<html><center>!!!PuzzleGame!!!<br>ä¸‹ã®ä¸­ã‹ã‚‰å¥½ããªãƒ”ãƒ¼ã‚¹æ•°ã‚’é¸ã‚“ã§ã­</center></html>");
+		welcome.setText("<html><center>!!!PuzzleGame!!!<br>D‚«‚Èƒs[ƒX”‚ğ‰º‚©‚ç‘I‚ñ‚Å‚Ë</center></html>");
 		welcome.setBounds(150,0,800,200);
-		welcome.setFont(new Font("MS ï¿½Sï¿½Vï¿½bï¿½N",Font.BOLD,40));
+		welcome.setFont(new Font(Font.SANS_SERIF,Font.BOLD,40));
 		add(welcome);
 		
-		FunctionButton funcbutton[] = new FunctionButton[4];
+		PieceButton piecebutton[] = new PieceButton[4];
 		for(int i = 0;i<4;i++){
-			String number = "PIECE_"+ Integer.toString((i+3)*(i+3));
-			funcbutton[i] = new FunctionButton("PIECE_9");
-			funcbutton[i].setBounds(300,i*100+200,400,100);
-			add(funcbutton[i]);
+			piecebutton[i] = new PieceButton(i+3);
+			piecebutton[i].setBounds(300,i*100+200,400,100);
+			add(piecebutton[i]);
 		}	
 		repaint();
 	}
@@ -47,18 +46,22 @@ public class BacePanel extends JLayeredPane {
 		setLayout(null);
 		setBackground(Color.YELLOW);
 		
-		FrameworkPanel centerpanel = new FrameworkPanel();
+		FrameworkPanel centerpanel = new FrameworkPanel(piecenumber);
 		
 		FunctionButton funcbutton = new FunctionButton("START");
 		funcbutton.setBounds(400,0,200,100);
 		add(funcbutton);
 		
-		adr = new Address();
+		adr = new Address(piecenumber);
+		piece = new PuzzlePanel[piecenumber][piecenumber];
 		
 		for(int i = 0;i<piecenumber;i++){
-			piece[i] = new PuzzlePanel(new Dimension(200,200),new Dimension(adr.start_x[i]*200,adr.start_y[i]*200));
-			piece[i].setBounds(adr.start_x[i]*200+200, adr.start_y[i]*200+100, 200, 200);
-			add(piece[i]);
+			for(int j = 0;j<piecenumber;j++){
+				System.out.println(i);
+				piece[i][j] = new PuzzlePanel(new Dimension(600/piecenumber,600/piecenumber),new Dimension(i*(600/piecenumber),j*(600/piecenumber)));
+				piece[i][j].setBounds(i*(600/piecenumber)+200, j*(600/piecenumber)+100, 600/piecenumber, 600/piecenumber);
+				add(piece[i][j]);
+			}	
 		}		
 		add(centerpanel);
 		repaint();
@@ -67,18 +70,21 @@ public class BacePanel extends JLayeredPane {
 	public void start(){	
 		removeAll();
 		
-		FrameworkPanel centerpanel = new FrameworkPanel();
+		FrameworkPanel centerpanel = new FrameworkPanel(piecenumber);
 		
 		FunctionButton funcbutton = new FunctionButton("RESET");
 		funcbutton.setBounds(400,0,200,100);
 		add(funcbutton);
 				
 		adr.rondomAddress();
+		piece = new PuzzlePanel[piecenumber][piecenumber];
 				
-		for(int i = 0;i<9;i++){
-			piece[i] = new PuzzlePanel(new Dimension(200,200),new Dimension(adr.start_x[i]*200,adr.start_y[i]*200));
-			piece[i].setBounds(adr.rondom_x[i]*12, adr.rondom_y[i]*12, 200, 200);
-			add(piece[i]);
+		for(int i = 0;i<piecenumber;i++){
+			for(int j = 0;j<piecenumber;j++){
+				piece[i][j] = new PuzzlePanel(new Dimension(600/piecenumber,600/piecenumber),new Dimension(i*(600/piecenumber),j*(600/piecenumber)));
+				piece[i][j].setBounds(adr.rondom_place[i][j], adr.rondom_place[i][j], 600/piecenumber, 600/piecenumber);
+				add(piece[i][j]);
+			}
 		}
 		add(centerpanel);
 		repaint();
@@ -92,8 +98,10 @@ public class BacePanel extends JLayeredPane {
 	
 	public void piececheck(){
 		
-		for(int i = 0;i<9;i++){
-			if( piece[i].lock == false) return;
+		for(int i = 0;i<piecenumber;i++){
+			for(int j = 0;j<piecenumber;j++){
+				if( piece[i][j].lock == false) return;
+			}
 		}
 		setBackground(Color.RED);
 	}

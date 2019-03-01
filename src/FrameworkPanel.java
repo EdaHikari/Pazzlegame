@@ -8,7 +8,9 @@ import javax.swing.border.EtchedBorder;
 
 public class FrameworkPanel extends JLayeredPane {
 
-	public FrameworkPanel() {
+	int piecenumber;
+	public FrameworkPanel(int piecenumber) {
+		this.piecenumber = piecenumber;
 		setBounds(200,100,600,600);
 		Border border = new EtchedBorder(EtchedBorder.RAISED, Color.black, Color.black);
 		setBorder(border);
@@ -21,10 +23,10 @@ public class FrameworkPanel extends JLayeredPane {
 	@Override
 	public void paint(Graphics graphics){
 		super.paint(graphics);
-		
-		Address adr = new Address();
-		for(int i = 0;i<9;i++){
-			graphics.drawRect(adr.start_x[i]*200, adr.start_y[i]*200, 200, 200);
+		for(int i = 0;i<piecenumber;i++){
+			for(int j = 0;j<piecenumber;j++){
+				graphics.drawRect(i*(600/piecenumber), j*(600/piecenumber), 600/piecenumber, 600/piecenumber);
+			}
 		}
 	}
 }

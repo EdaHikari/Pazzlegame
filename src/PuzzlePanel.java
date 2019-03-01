@@ -46,13 +46,13 @@ public class PuzzlePanel extends JLayeredPane implements MouseMotionListener{
 	@Override
 	public void mouseDragged(MouseEvent event) {
 		
-		setBounds(event.getXOnScreen()-200,event.getYOnScreen()-200,width,height);		
+		setBounds(event.getXOnScreen()-width,event.getYOnScreen()-width,width,height);		
 		
-		if((start_x)<(event.getXOnScreen()-200) &&(event.getXOnScreen()-200)<(start_x+width)
-				&& (start_y)<( event.getYOnScreen()-200) &&( event.getYOnScreen()-200) < (start_y+height)){
+		if((start_x)<(event.getXOnScreen()) &&(event.getXOnScreen())<(start_x+width)
+				&& (start_y)<( event.getYOnScreen()) &&( event.getYOnScreen()) < (start_y+height)){
 			
 			removeMouseMotionListener(this);
-			setBounds(start_x+200,start_y+100,width,height);
+			setBounds(start_x,start_y,width,height);
 			lock = true;
 			
 			BacePanel bpanel =(BacePanel)PuzzlePanel.this.getParent();
