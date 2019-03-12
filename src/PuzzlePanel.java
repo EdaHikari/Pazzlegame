@@ -17,7 +17,7 @@ public class PuzzlePanel extends JLayeredPane implements MouseMotionListener{
 	
 	BufferedImage buffImg = null;
 	int width,height,start_x,start_y;
-	public boolean lock = false;
+	public boolean lock;
 		  
 	public PuzzlePanel(Dimension size,Dimension start){
 		setPreferredSize(size);
@@ -28,6 +28,7 @@ public class PuzzlePanel extends JLayeredPane implements MouseMotionListener{
 		height = (int)(size.getHeight());
 		start_x= (int)(start.getWidth());
 		start_y = (int)(start.getHeight());
+		lock = false;
 		setLayer(this,1);
 		addMouseMotionListener(this);
 	
@@ -40,7 +41,7 @@ public class PuzzlePanel extends JLayeredPane implements MouseMotionListener{
 	
 	@Override
 	public void paintComponent(Graphics graphics){
-		graphics.drawImage(buffImg, 0, 0,width,height,start_x,start_y,start_x + width,start_y + height, null);
+		graphics.drawImage(buffImg, 0, 0,width,height,start_x-200,start_y-20,start_x + width-200,start_y + height-20, null);
 	}
 
 	@Override

@@ -58,7 +58,7 @@ public class BacePanel extends JLayeredPane {
 		for(int i = 0;i<piecenumber;i++){
 			for(int j = 0;j<piecenumber;j++){
 				System.out.println(i);
-				piece[i][j] = new PuzzlePanel(new Dimension(600/piecenumber,600/piecenumber),new Dimension(i*(600/piecenumber),j*(600/piecenumber)));
+				piece[i][j] = new PuzzlePanel(new Dimension(600/piecenumber,600/piecenumber),new Dimension(adr.start_place[i][j].width, adr.start_place[i][j].height));
 				piece[i][j].setBounds(i*(600/piecenumber)+200, j*(600/piecenumber)+100, 600/piecenumber, 600/piecenumber);
 				add(piece[i][j]);
 			}	
@@ -77,12 +77,10 @@ public class BacePanel extends JLayeredPane {
 		add(funcbutton);
 				
 		adr.rondomAddress();
-		piece = new PuzzlePanel[piecenumber][piecenumber];
 				
 		for(int i = 0;i<piecenumber;i++){
 			for(int j = 0;j<piecenumber;j++){
-				piece[i][j] = new PuzzlePanel(new Dimension(600/piecenumber,600/piecenumber),new Dimension(i*(600/piecenumber),j*(600/piecenumber)));
-				piece[i][j].setBounds(adr.rondom_place[i][j], adr.rondom_place[i][j], 600/piecenumber, 600/piecenumber);
+				piece[i][j].setBounds(adr.rondom_place[i][j].width, adr.rondom_place[i][j].height, 600/piecenumber, 600/piecenumber);
 				add(piece[i][j]);
 			}
 		}
